@@ -20,7 +20,7 @@ jobs:
       run:
         shell: bash
 
-    runs-on: ${{ matrix.os }}
+    runs-on: "${{ (matrix.os) == 'ubuntu-latest' && fromJSON('[\"self-hosted\",\"linux\",\"x64\"]') || (matrix.os) == 'macos-latest' && fromJSON('[\"self-hosted\",\"macOS\",\"ARM64\"]') || (matrix.os) == 'windows-latest' && fromJSON('[\"self-hosted\",\"windows\",\"x64\"]') || (matrix.os) }}"
 
     steps:
 
@@ -91,7 +91,7 @@ jobs:
 
   update-badge:
     needs: tests-with-vcr
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     steps:
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
